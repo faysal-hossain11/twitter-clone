@@ -6,11 +6,13 @@ import useLoginModal from "@/hooks/useLoginModal";
 import useRegisterModal from "@/hooks/useRegisterModal";
 
 
-const LoginModal = () => {
+const RegisterModal = () => {
     const LoginModal = useLoginModal();
     const RegisterModal = useRegisterModal();
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [isLoding, setIsLoding] = useState();
 
 
@@ -18,26 +20,24 @@ const LoginModal = () => {
         if(isLoding) {
             return;
         }
-        LoginModal.onClose();
-        RegisterModal.onOpen();
+        RegisterModal.onClose();
+        LoginModal.onOpen();
 
-    }, [isLoding, LoginModal, RegisterModal]);
+    }, [isLoding, RegisterModal, LoginModal]);
 
 
     const onSubmit = useCallback(async () => {
         try{
             setIsLoding(true);
-            // todo add login
-            LoginModal.onClose();
+            // todo add  Register and login
+            RegisterModal.onClose();
 
         }catch(error) {
             console.log(error);
         }finally{
             setIsLoding(false);
         }
-    }, [LoginModal]);
-
-
+    }, [RegisterModal]);
 
     const bodyContent = (
         <div className=" flex flex-col gap-4">
@@ -47,37 +47,46 @@ const LoginModal = () => {
                 value={email}
                 disabled={isLoding}
             />
+            <Input
+                placeholder="Name"
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+                disabled={isLoding}
+            />
+            <Input
+                placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
+                value={username}
+                disabled={isLoding}
+            />
             <Input 
                 placeholder="Password"
-                type="password"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 disabled={isLoding}
             />
         </div>
     )
-    
+
     const footerContent = (
         <div className="text-center mt-4 text-neutral-400">
-            <p>First time use Twitter? 
+            <p>Already an account?
                 <span 
                     onClick={onToggle}
                     className="text-white cursor-pointer hover:underline"
                 >
-                    Create an account
+                     Sign in
                 </span>
             </p>
         </div>
     )
-
-
     return (
         <Modal 
             disabled={isLoding}
-            isOpen={LoginModal.isOpen}
-            title="Login"
-            actionLabal="Sign in"
-            onClose={LoginModal.onClose}
+            isOpen={RegisterModal.isOpen}
+            title="Create an account"
+            actionLabal="Register"
+            onClose={RegisterModal.onClose}
             onSubmit={onSubmit}
             body={bodyContent}
             footer={footerContent}
@@ -85,4 +94,4 @@ const LoginModal = () => {
     );
 };
 
-export default LoginModal;
+export default RegisterModal;
